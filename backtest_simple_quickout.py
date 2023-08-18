@@ -59,7 +59,7 @@ date_type='daily'
 df = retrieve_data(ticker = ticker, start_date = start_date, end_date = end_date, date_type=date_type)
 
 # MA signal 기준 설정
-long = 50
+long = 20
 short = 1
 print(long, short)
 
@@ -130,10 +130,6 @@ while i < ROR.shape[0]:
 
 
 print('{:,}'.format(round(ROR.iloc[-1]['cumror'],2)), long, short, threshold_down, min(mdd_lst))
-filename = 'f{ticker}_simple_quickout_{threshold_up}_{threshold_down}_{long}_{short}_{start_date}_{end_date}_{date_type}.csv'   
-file = open(filename, "w", encoding="utf-8-sig")  
-ROR.to_csv('C:/finance_backtest/'+filename, index=None)
-
-
-
-
+filename = f'{ticker}_simple_quickout_{threshold_up}_{threshold_down}_{long}_{short}_{start_date}_{end_date}_{date_type}.csv'   
+# file = open(filename, "w", encoding="utf-8-sig")  
+ROR.to_csv(filename, index=None)
