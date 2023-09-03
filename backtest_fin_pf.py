@@ -80,3 +80,60 @@ for _ in range(10):
 # 2. Backtesting
 #################
 
+###
+# 2.1. 
+###
+
+## funcion ##
+## def ##
+# for y in df_OPtoAT.index:
+#     df_OPtoAT_temp = df_OPtoAT.loc[y,:]
+#     df_OPtoAT_temp = 
+
+y = df_OPtoAT.index[0]
+df_OPtoAT_temp = df_OPtoAT.loc[y,:].dropna().sort_values(ascending=False) # sorting by value
+
+# set firm no.
+no = 50
+
+# select high scored firm
+firm_sel = df_OPtoAT_temp.iloc[:no].index
+
+# equal-weight
+weight = 'equal' # 'value'
+if weight == 'equal':
+
+# position - long from Jul of year t+1 to Jun of year t+2
+long_start = pd.Timestamp(y.year + 1, 6, 30) 
+long_end = pd.Timestamp(y.year + 2, 6, 30) 
+
+df_P.loc[long_start:long_end, ] 
+'''
+Problem. 상위 50개 기업 중 비상장기업이 있는 경우 50개가 되질 못함
+A1. 넉넉하게 100개 기업으로 잡고 NaN이 아닌 기업에 대해서만 분석
+A2. 각 월마다 price 값이 존재하는 기업 50개를 찾아서 분석
+'''
+###
+# A2. 
+###
+i = 0
+firm_sel_nonan = []
+while len(firm_sel_nonan) < no:
+    firm = df_OPtoAT_temp.index[i]
+    # Jun of year t+2에 가격 데이터가 없는 기업은 제외
+    if not(pd.isna(df_P.loc[long_start, firm])) and not(pd.isna(df_MV.loc[long_start, firm])) :
+        firm_sel_nonan.append(firm)
+    i += 1
+
+###
+#
+###
+df_P_temp = df_P.loc[long_start:long_end, firm_sel_nonan] # contain last mth
+df_MV_temp = df_MV.loc[long_start:long_end, firm_sel_nonan]
+
+
+df_OPtoAT_temp[firm_sel_nonan]
+
+# select high scored firm
+firm_sel = df_OPtoAT_temp.iloc[:no].index
+
